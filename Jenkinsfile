@@ -19,3 +19,4 @@ pipeline {
         bat 'docker ps'
       }
     }}
+}
