@@ -9,7 +9,7 @@ pipeline {
         }
         stage('Run Docker Compose') {
             steps {
-                sh 'docker compose up'
+                bat 'docker compose up'
             }
         }
     }
