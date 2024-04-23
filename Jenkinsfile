@@ -1,22 +1,28 @@
 pipeline {
-  agent any
-  triggers{
-    githubPush()
-  }
-  stages {
-    stage('Docker Build'){
-      steps {
-        bat 'docker build -t ashanwijebandara/4289-wijebandara .'
-      }
+    agent any
+    
+    environment {
+        GITHUB_REPO_URL = 'https://github.com/ashanwijebandara/4289-wijebandara.git'
     }
-    stage('Docker Run'){
-      steps{
-        bat 'docker run -d -p 3001:3001 ashanwijebandara/4289-wijebandara'
-      }
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'master', url: "${env.GITHUB_REPO_URL}"
+            }
+        }
+        
+        stage('Build Docker Image') {
+            steps {
+                bat 'docker build -t app-backend .'
+            }
+        }
+        
+        stage('Run Docker Image') {
+            steps {
+                bat 'docker run -d -p 3001:3001 app-backend'
+            }
+        }
+        
     }
-    stage('Final'){
-      steps{
-        bat 'docker ps'
-      }
-    }}
 }
